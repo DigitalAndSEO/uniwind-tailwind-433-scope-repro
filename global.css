@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+@import 'uniwind';
+
+@layer theme {
+  @variant light {
+    --repro: #2563eb;
+  }
+
+  @variant dark {
+    --repro: #60a5fa;
+  }
+
+  :root {
+    @variant light {
+      --rooted-control: #16a34a;
+    }
+
+    @variant dark {
+      --rooted-control: #4ade80;
+    }
+  }
+}
+
+@theme inline static {
+  --color-repro: var(--repro);
+  --color-rooted-control: var(--rooted-control);
+}

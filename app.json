@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Uniwind Scope Repro",
+    "slug": "uniwind-tailwind-433-scope-repro",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "com.digitalandseo.uniwindscoperepro"
+    },
+    "android": {
+      "package": "com.digitalandseo.uniwindscoperepro"
+    }
+  }
+}
