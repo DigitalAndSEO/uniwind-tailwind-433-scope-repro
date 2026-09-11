@@ -13,10 +13,18 @@
   :root {
     @variant light {
       --rooted-control: #16a34a;
+      --brand-repro: var(--color-indigo-600);
+      --brand-repro-foreground: var(--color-white);
+      --map-repro: var(--color-sky-500);
+      --map-repro-foreground: var(--color-white);
     }
 
     @variant dark {
       --rooted-control: #4ade80;
+      --brand-repro: var(--color-indigo-400);
+      --brand-repro-foreground: var(--color-black);
+      --map-repro: var(--color-sky-400);
+      --map-repro-foreground: var(--color-black);
     }
   }
 }
@@ -24,4 +32,8 @@
 @theme inline static {
   --color-repro: var(--repro);
   --color-rooted-control: var(--rooted-control);
+  --color-brand-repro: var(--brand-repro);
+  --color-brand-repro-foreground: var(--brand-repro-foreground);
+  --color-map-repro: var(--map-repro);
+  --color-map-repro-foreground: var(--map-repro-foreground);
 }

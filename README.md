@@ -1,11 +1,15 @@
-# Uniwind + Tailwind CSS 4.3.3 `:scope` reproduction
+# Uniwind + Tailwind CSS 4.3.3 theme syntax verification
 
-Minimal Expo reproduction for theme variables resolving to `"unset"` with:
+Minimal Expo project that preserves the rootless `@variant` reproduction and
+verifies the documented `:root` syntax with:
 
 - Uniwind 1.12.0
 - Tailwind CSS 4.3.3
 - Expo 57.0.20
 - React Native 0.86.3
+
+The repository sets `verifyDepsBeforeRun: error` so pnpm never repairs or
+reinstalls dependencies implicitly while running a reproduction command.
 
 ![iOS reproduction showing the missing rootless color and working rooted control](docs/repro-ios.png)
 
@@ -18,14 +22,12 @@ pnpm start
 
 Open the app on iOS or Android.
 
-## Expected
+## Original reproduction
 
-- Both circles are visible: the rootless token is blue and the `:root` control
-  is green.
-- `useCSSVariable("--repro")` and `useCSSVariable("--color-repro")`
-  resolve to concrete color values.
+The original expectation was that both circles would be visible and both the
+raw and aliased rootless variables would resolve to concrete colors.
 
-## Actual
+The actual result remains intentionally visible:
 
 - The rootless custom color is not applied and resolves to `"unset"`.
 - The otherwise identical `:root` control remains green and resolves to a
@@ -38,11 +40,22 @@ custom variable in the native scoped theme variables.
 This is a silent regression: the build and typecheck complete successfully,
 but runtime consumers receive the literal string `"unset"`.
 
-## Control cases
+## Supported syntax verification
 
-The same CSS worked with Uniwind 1.10.1 and Tailwind CSS 4.3.2.
+The additional production-shaped case follows the syntax documented by
+Uniwind. It defines light and dark variables under `:root`, exposes them
+through `@theme inline static`, consumes the generated utilities and reads the
+same aliases with `useCSSVariable`.
 
-Wrapping the variants in `:root` also avoids the failure:
+The screen must show:
+
+- Visible Brand and Map circles with readable foreground text.
+- `PASS: all supported tokens resolved` in both light and dark themes.
+- Concrete raw and aliased values instead of `"unset"`.
+
+![iOS verification showing the supported production-shaped theme passing](docs/supported-syntax-ios.png)
+
+The supported structure is:
 
 ```css
 @layer theme {
@@ -58,11 +71,20 @@ Wrapping the variants in `:root` also avoids the failure:
 }
 ```
 
-If rootless `@variant` blocks are no longer supported, a compile-time warning
-would prevent the current silent fallback to `"unset"`.
+## Upstream outcome
+
+The Uniwind maintainer closed issue #669 as not planned on September 7, 2026.
+Rootless `@variant` blocks are outside the supported syntax; projects should
+use `@layer theme -> :root -> @variant`. Uniwind v2 may introduce custom theme
+syntax under the project's control.
+
+This repository keeps the unsupported case so the silent `"unset"` behavior
+remains reproducible while documenting and exercising the supported migration
+path.
 
 ## Related upstream work
 
+- https://github.com/uni-stack/uniwind/issues/669
 - https://github.com/uni-stack/uniwind/issues/661
 - https://github.com/uni-stack/uniwind/pull/662
 - https://github.com/uni-stack/uniwind/issues/623
